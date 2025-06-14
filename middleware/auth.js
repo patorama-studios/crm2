@@ -6,7 +6,7 @@ const authenticate = async (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     
     if (!token) {
-      throw new Error();
+      return res.status(401).json({ error: 'Authentication required' });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -16,21 +16,22 @@ const authenticate = async (req, res, next) => {
     );
 
     if (users.length === 0) {
-      throw new Error();
+      return res.status(401).json({ error: 'User not found or inactive' });
     }
 
     req.user = users[0];
     req.token = token;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Please authenticate' });
+    console.error('Auth error:', error.message);
+    res.status(401).json({ error: 'Invalid authentication token' });
   }
 };
 
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ error: 'Access denied' });
+      return res.status(403).json({ error: 'Access denied - insufficient permissions' });
     }
     next();
   };

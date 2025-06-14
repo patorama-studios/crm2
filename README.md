@@ -1,22 +1,22 @@
-# Patorama Studios CRM
+# Patorama Studios CRM - Simplified Version
 
-A custom CRM platform built for Patorama Studios real estate media business, focusing on job management, customer relationships, and team coordination.
+A custom CRM platform built for Patorama Studios real estate media business, optimized for shared hosting environments.
 
 ![Patorama CRM](https://img.shields.io/badge/Patorama-CRM-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
 ![React](https://img.shields.io/badge/React-18+-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
+![Shared Hosting](https://img.shields.io/badge/Shared%20Hosting-Compatible-brightgreen)
 
 ## 🚀 Features
 
 - **User Management** - Role-based access control (Super Admin, Team Manager, Content Creator, Editor)
 - **Job Scheduling** - Complete job lifecycle management
 - **Customer Management** - Agency and contact management
-- **File Upload System** - Secure media file handling
-- **Invoice Generation** - Integration ready for Xero
-- **Payment Processing** - Stripe integration ready
-- **Team Notifications** - Real-time updates and assignments
+- **Dashboard Analytics** - Real-time stats and metrics
+- **Authentication** - Secure JWT-based login system
 - **Responsive Design** - Works on desktop and mobile
+- **Shared Hosting Compatible** - No native modules, simplified dependencies
 
 ## 🛠️ Tech Stack
 
@@ -24,98 +24,46 @@ A custom CRM platform built for Patorama Studios real estate media business, foc
 - **Node.js** with Express.js
 - **MySQL** database
 - **JWT** authentication
-- **Multer** for file uploads
-- **bcrypt** for password hashing
+- **CryptoJS** for password hashing (no bcrypt compilation issues)
+- **Simple dependencies** - works on shared hosting
 
 ### Frontend
-- **React** 18+
+- **React** 18+ (pre-built and included)
 - **Material-UI** components
-- **React Router** for navigation
-- **Axios** for API calls
-
-### Integrations (Ready)
-- **Stripe** for payments
-- **Xero** for invoicing
-- **Box.com** for file storage
-- **Google Calendar** for scheduling
-- **Go High Level** for CRM
+- **Responsive design**
 
 ## 📋 Prerequisites
 
-- Node.js 16 or higher
-- MySQL 8.0 or higher
-- npm or yarn
+- **Shared hosting with Node.js support** (cPanel with Node.js apps)
+- **MySQL database**
+- **No compilation required** - all dependencies are pure JavaScript
 
 ## 🔧 Installation
 
-### 1. Clone the repository
+### 1. Download/Clone the repository
 ```bash
 git clone https://github.com/patorama-studios/crm2.git
-cd crm2
 ```
 
-### 2. Install backend dependencies
-```bash
-npm install
-```
+### 2. Database Setup
+Import the database schema: `patorama_crm_simplified_import.sql`
 
-### 3. Install frontend dependencies
-```bash
-cd frontend
-npm install
-cd ..
-```
+### 3. Upload to Server
+Upload all files to your web server (via FTP or cPanel File Manager)
 
-### 4. Set up environment variables
-```bash
-cp .env.example .env
-# Edit .env with your database credentials and API keys
-```
+### 4. Configure Node.js App (cPanel)
+- **Application Startup File:** `server.js`
+- **Application Root:** Your upload directory
+- **Node.js Version:** 18.x or higher
+- **Run NPM Install** (should work without errors)
 
-### 5. Set up the database
-```bash
-mysql -u root -p < patorama-crm-production-schema.sql
-```
-
-## 🚀 Development
-
-### Start backend server
-```bash
-npm run dev
-```
-
-### Start frontend (in another terminal)
-```bash
-cd frontend
-npm start
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:3001
-
-## 🌐 Production Deployment
-
-### Build for production
-```bash
-./deploy.sh
-```
-
-### Deploy to server
-```bash
-# Upload files via FTP or SCP
-# Import database schema
-# Install dependencies: npm install --production
-# Start with PM2: pm2 start server.js --name patorama-crm
-```
-
-## 🔐 Default Login
+## 🌐 Live Demo
 
 - **URL:** https://crm.patorama.com.au
 - **Email:** admin@patorama.com.au
 - **Password:** PatoramaAdmin2024!
 
-## 📊 User Roles
+## 🔐 User Roles
 
 ### Super Admin
 - Full system access
@@ -126,7 +74,6 @@ The application will be available at:
 - Job creation and assignment
 - Customer management
 - Team coordination
-- Reports access
 
 ### Content Creator
 - View assigned jobs
@@ -142,21 +89,17 @@ The application will be available at:
 
 ```
 crm2/
-├── backend/
-│   ├── controllers/     # Request handlers
-│   ├── middleware/      # Auth & validation
-│   ├── routes/         # API endpoints
-│   ├── config/         # Database config
-│   └── server.js       # Main server file
-├── frontend/
-│   ├── src/
-│   │   ├── components/ # React components
-│   │   ├── pages/      # Page components
-│   │   ├── services/   # API integration
-│   │   └── context/    # React context
-│   └── public/         # Static files
-├── uploads/            # File uploads
-└── patorama-crm-production-schema.sql
+├── server.js           # Main application (startup file)
+├── package.json        # Simplified dependencies
+├── .env               # Production configuration
+├── config/
+│   └── database.js    # MySQL connection
+├── middleware/
+│   └── auth.js        # Authentication
+├── utils/
+│   └── auth.js        # Password hashing (CryptoJS)
+├── public/            # React frontend (pre-built)
+└── uploads/           # File uploads directory
 ```
 
 ## 🔌 API Endpoints
@@ -166,92 +109,133 @@ crm2/
 - `GET /api/auth/me` - Get current user
 - `POST /api/auth/logout` - User logout
 
+### Dashboard
+- `GET /api/dashboard/stats` - Get dashboard statistics
+
 ### Jobs
 - `GET /api/jobs` - List jobs (filtered by role)
-- `POST /api/jobs` - Create new job
 - `GET /api/jobs/:id` - Get job details
-- `PATCH /api/jobs/:id` - Update job
-- `DELETE /api/jobs/:id` - Delete job
 
 ### Customers
 - `GET /api/customers` - List customers
-- `POST /api/customers` - Create customer
-- `GET /api/customers/:id` - Get customer details
-- `PATCH /api/customers/:id` - Update customer
 
-### File Uploads
-- `POST /api/uploads` - Upload files
-- `GET /api/uploads/job/:jobId` - Get job uploads
-- `PATCH /api/uploads/:id` - Mark as final
-- `DELETE /api/uploads/:id` - Delete upload
+### Health Check
+- `GET /api/health` - Server status
+
+## ⚙️ Configuration
+
+### Environment Variables (.env)
+```env
+PORT=3001
+NODE_ENV=production
+DB_HOST=localhost
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+JWT_SECRET=your_jwt_secret
+```
+
+## 🚀 Deployment Steps
+
+### 1. **Prepare Database**
+```sql
+-- Import the provided SQL file
+mysql -u your_user -p your_database < patorama_crm_simplified_import.sql
+```
+
+### 2. **Upload Files**
+- Upload all project files to your web server
+- Ensure `.env` file has correct database credentials
+
+### 3. **Configure cPanel Node.js App**
+- **Startup File:** `server.js`
+- **Install Dependencies:** Click "Run NPM Install"
+- **Start Application**
+
+### 4. **Test**
+- Visit your domain
+- Login with admin credentials
+- Verify dashboard loads with stats
+
+## ✅ **Why This Version is Better for Shared Hosting:**
+
+- ✅ **No bcrypt** - Uses CryptoJS (pure JavaScript, no compilation)
+- ✅ **Minimal dependencies** - Only essential packages
+- ✅ **No native modules** - No compilation errors
+- ✅ **Smaller package** - Faster uploads and deployments
+- ✅ **Same functionality** - All CRM features included
+- ✅ **Pre-built frontend** - No build process required
 
 ## 🔒 Security Features
 
 - JWT-based authentication
 - Role-based access control (RBAC)
-- Password hashing with bcrypt
-- File upload validation
+- Password hashing with CryptoJS
+- Input validation
 - SQL injection protection
-- XSS protection with Helmet.js
 
 ## 🧪 Testing
 
-```bash
-npm test
+Access the health endpoint to verify deployment:
+```
+GET /api/health
 ```
 
-## 📝 Environment Variables
-
-```env
-# Server
-PORT=3001
-NODE_ENV=development
-
-# Database
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_NAME=patorama_crm
-
-# JWT
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-
-# External APIs
-STRIPE_SECRET_KEY=sk_test_...
-XERO_CLIENT_ID=...
-BOX_CLIENT_ID=...
+Should return:
+```json
+{
+  "status": "OK",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "version": "1.0.0",
+  "environment": "production"
+}
 ```
 
-## 🤝 Contributing
+## 📞 Support
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push to branch: `git push origin feature/new-feature`
-5. Submit a pull request
+- **GitHub Issues:** [Create an issue](https://github.com/patorama-studios/crm2/issues)
+- **Email:** support@patorama.com.au
+
+## 📝 Dependencies (Simplified)
+
+```json
+{
+  "express": "^4.18.2",
+  "mysql2": "^3.6.5", 
+  "dotenv": "^16.3.1",
+  "crypto-js": "^4.2.0",
+  "jsonwebtoken": "^9.0.2",
+  "cors": "^2.8.5",
+  "express-validator": "^7.0.1",
+  "compression": "^1.7.4"
+}
+```
+
+**All pure JavaScript - no compilation required!**
+
+## 🏗️ Troubleshooting
+
+### Common Issues:
+
+**"Module not found" errors:**
+- Run NPM install in cPanel Node.js manager
+
+**Database connection failed:**
+- Check .env database credentials
+- Ensure database exists and user has permissions
+
+**503 Service errors:**
+- Check Node.js app logs in cPanel
+- Verify startup file is set to `server.js`
 
 ## 📄 License
 
 Private - Patorama Studios
 
-## 🆘 Support
-
-For support and questions:
-- Email: support@patorama.com.au
-- GitHub Issues: [Create an issue](https://github.com/patorama-studios/crm2/issues)
-
-## 🗓️ Roadmap
-
-- [ ] Real-time notifications with WebSockets
-- [ ] Advanced reporting dashboard
-- [ ] Mobile app for content creators
-- [ ] AI-powered image/video processing
-- [ ] Automated workflow triggers
-- [ ] Customer portal
-- [ ] Integration with more external services
-
 ---
+
+## 🎯 **Perfect for Shared Hosting!**
+
+This simplified version eliminates all the common deployment issues with shared hosting providers while maintaining full CRM functionality.
 
 Built with ❤️ by Patorama Studios
